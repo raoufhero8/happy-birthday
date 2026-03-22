@@ -8,135 +8,135 @@
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-    body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        margin: 0;
-        background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fc6076);
-        background-size: 400% 400%;
-        animation: gradientBG 10s ease infinite;
-        font-family: 'Poppins', sans-serif;
-        overflow: hidden;
-    }
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fc6076);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
 
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-    .heart-container {
-        width: 100px;
-        height: 100px;
-        display: none;
-        cursor: pointer;
-        margin-bottom: 20px;
-        animation: spawnHeart 1s forwards;
-        position: relative;
-    }
+.heart-container {
+    width: 100px;
+    height: 100px;
+    display: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    animation: spawnHeart 1s forwards;
+    position: relative;
+}
 
-    .heart {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        height: 100%;
-        background: red;
-        transform: translate(-50%, -50%) rotate(45deg);
-        opacity: 0.8;
-        animation: beat 1s infinite alternate;
-    }
+.heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: red;
+    transform: translate(-50%, -50%) rotate(45deg);
+    opacity: 0.8;
+    animation: beat 1s infinite alternate;
+}
 
-    .heart::before,
-    .heart::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: red;
-        border-radius: 50%;
-    }
+.heart::before,
+.heart::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: red;
+    border-radius: 50%;
+}
 
-    .heart::before { top: -50%; left: 0; }
-    .heart::after { left: 50%; top: 0; }
+.heart::before { top: -50%; left: 0; }
+.heart::after { left: 50%; top: 0; }
 
-    .message {
-        font-size: 2.2em;
-        font-family: 'Pacifico', cursive;
-        text-align: center;
-        opacity: 0;
-        transition: opacity 3s ease-in-out;
-        margin: 10px 0;
-        text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-        color: white;
-    }
+.message {
+    font-size: 2.2em;
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 3s ease-in-out;
+    margin: 10px 0;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    color: white;
+}
 
-    button {
-        padding: 12px 25px;
-        font-family: 'Poppins', sans-serif;
-        background-color: #ff69b4;
-        color: #fff;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        display: none;
-        margin-top: 10px;
-        transition: 0.3s;
-    }
+button {
+    padding: 12px 25px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ff69b4;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    display: none;
+    margin-top: 10px;
+    transition: 0.3s;
+}
 
-    button:hover {
-        background-color: #ff4da6;
-        transform: scale(1.05);
-    }
+button:hover {
+    background-color: #ff4da6;
+    transform: scale(1.05);
+}
 
-    input {
-        padding:10px;
-        border-radius:10px;
-        border:none;
-        text-align:center;
-        margin-bottom:10px;
-    }
+input {
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+    margin-bottom:10px;
+}
 
-    @keyframes beat {
-        0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-        100% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
-    }
+@keyframes beat {
+    0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+    100% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
+}
 
-    @keyframes spawnHeart {
-        0% { transform: scale(0); opacity: 0; }
-        100% { transform: scale(1); opacity: 1; }
-    }
+@keyframes spawnHeart {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
 
-    @keyframes shake {
-        0% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        50% { transform: translateX(5px); }
-        75% { transform: translateX(-5px); }
-        100% { transform: translateX(0); }
-    }
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
 
-    .shake {
-        animation: shake 0.5s;
-    }
+.shake {
+    animation: shake 0.5s;
+}
 
-    .floating-heart {
-        position: absolute;
-        font-size: 20px;
-        animation: floatUp 4s linear infinite;
-    }
+.floating-heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 4s linear infinite;
+}
 
-    @keyframes floatUp {
-        0% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(-800px); opacity: 0; }
-    }
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-800px); opacity: 0; }
+}
 </style>
 </head>
 <body>
 
-<input type="text" id="nameInput" placeholder="Meriem 🎂">
+<input type="text" id="nameInput" placeholder="Meriem🎂">
 <button id="startBtn" style="display:block;">Start 🎉</button>
 
 <div class="heart-container" id="birthdayHeart">
@@ -210,16 +210,40 @@ heart.addEventListener('click', () => {
     heart.classList.add("shake");
     setTimeout(() => heart.classList.remove("shake"), 500);
 
-    typeText(msg1, `Happy birthday my ${personName}! Wishing you a wonderful life! 💕`);
+    // رسالة أولى
+    typeText(msg1, `Happy birthday ${personName}! Wishing you a wonderful life! 💕`);
     msg1.style.opacity = '1';
-    heart.style.display = 'none';
 
-    music.play().catch(() => playButton.style.display = 'block');
+    // رسالة سحرية تحت القلب
+    const magicMsg = document.createElement("div");
+    magicMsg.textContent = "A little magic for the birthday star ✨ – Raouf";
+    magicMsg.style.fontFamily = "'Pacifico', cursive";
+    magicMsg.style.fontSize = "1.5em";
+    magicMsg.style.color = "#fff";
+    magicMsg.style.opacity = "0";
+    magicMsg.style.textAlign = "center";
+    magicMsg.style.marginTop = "10px";
+
+    heart.appendChild(magicMsg);
 
     setTimeout(() => {
-        msg1.style.opacity = '0';
-        btn2.style.display = 'block';
-    }, 4000);
+        magicMsg.style.opacity = "1";
+    }, 100);
+
+    // بعد 3 ثواني تختفي الرسالة السحرية مع القلب
+    setTimeout(() => {
+        magicMsg.style.opacity = "0";
+        heart.style.display = 'none';
+
+        setTimeout(() => {
+            msg1.style.opacity = '0';
+            btn2.style.display = 'block';
+        }, 500);
+
+    }, 3000);
+
+    // تشغيل الموسيقى
+    music.play().catch(() => playButton.style.display = 'block');
 });
 
 // btn2
@@ -246,36 +270,7 @@ btn3.addEventListener('click', () => {
         origin: { y: 0.6 }
     });
 });
-// بعد 3 ثواني من ظهور الرسالة الأخيرة
-setTimeout(() => {
-    const finalMsg = document.createElement("div");
-    finalMsg.textContent = "A little magic for the birthday star ✨ – Raouf";
-    finalMsg.style.fontFamily = "'Pacifico', cursive";
-    finalMsg.style.fontSize = "1.8em";
-    finalMsg.style.color = "#fff";
-    finalMsg.style.opacity = "0";
-    finalMsg.style.textAlign = "center";
-    finalMsg.style.marginTop = "20px";
-    finalMsg.style.transition = "opacity 2s";
 
-    document.body.appendChild(finalMsg);
-
-    setTimeout(() => {
-        finalMsg.style.opacity = "1";
-
-        // اختياري: نجعل قلوب صغيرة تطير مع الرسالة
-        for (let i = 0; i < 20; i++) {
-            const heart = document.createElement("div");
-            heart.classList.add("floating-heart");
-            heart.innerHTML = "💖";
-            heart.style.left = Math.random() * window.innerWidth + "px";
-            heart.style.bottom = "0px";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 4000);
-        }
-
-    }, 100);
-}, 3000);
 // music loop
 music.addEventListener('ended', () => {
     music.currentTime = 0;
