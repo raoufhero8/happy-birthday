@@ -78,6 +78,21 @@
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        #playButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #ff69b4;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+            z-index: 20;
+        }
     </style>
 </head>
 <body>
@@ -88,13 +103,16 @@
         <div class="heart"></div>
     </div>
 
-    <audio id="birthdayMusic" src="audio/music.mp3" preload="auto"></audio>
+    <audio id="birthdayMusic" src="music.mp3" preload="auto"></audio>
+
+    <button id="playButton">تشغيل الموسيقى 🎵</button>
 
     <script>
         const body = document.body;
         const birthdayHeart = document.getElementById('birthdayHeart');
         const messageDiv = document.getElementById('message');
         const birthdayMusic = document.getElementById('birthdayMusic');
+        const playButton = document.getElementById('playButton');
 
         // Initial dark theme
         body.style.backgroundColor = '#1a1a1a';
@@ -111,14 +129,24 @@
         birthdayHeart.addEventListener('click', () => {
             messageDiv.textContent = 'Happy birthday my bestieee i wish you have great life from raouf 💕💕💕';
             messageDiv.style.opacity = '1';
-            birthdayMusic.play();
             birthdayHeart.style.display = 'none'; // Hide heart after click
+
+            birthdayMusic.play().catch(() => {
+                // Show play button if browser blocks autoplay
+                playButton.style.display = 'block';
+            });
         });
 
-        // Ensure music loops
+        // Loop the music
         birthdayMusic.addEventListener('ended', () => {
             birthdayMusic.currentTime = 0;
             birthdayMusic.play();
+        });
+
+        // Play button fallback
+        playButton.addEventListener('click', () => {
+            birthdayMusic.play();
+            playButton.style.display = 'none';
         });
     </script>
 
