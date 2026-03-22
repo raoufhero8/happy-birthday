@@ -1,176 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Final Surprise 💕</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
-
-<style>
-body {
-    margin:0;
-    overflow:hidden;
-    font-family:'Poppins', sans-serif;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    transition:1.5s;
-}
-
-/* شاشة البداية */
-#loading {
-    color:white;
-    font-size:20px;
-}
-
-/* الخلفية بعد */
-.pink {
-    background: linear-gradient(270deg, #ff9a9e, #ffdde1, #fc6076);
-    background-size: 600% 600%;
-    animation: bgMove 6s ease infinite;
-}
-
-@keyframes bgMove {
-    0% {background-position:0%}
-    50% {background-position:100%}
-    100% {background-position:0%}
-}
-
-/* القلب */
-.heart {
-    width:100px;
-    height:100px;
-    background:red;
-    transform: rotate(45deg);
-    position:absolute;
-    cursor:pointer;
-    animation: pulse 1s infinite;
-}
-
-.heart::before,
-.heart::after{
-    content:'';
-    position:absolute;
-    width:100px;
-    height:100px;
-    background:red;
-    border-radius:50%;
-}
-
-.heart::before{ top:-50px; left:0; }
-.heart::after{ left:50px; top:0; }
-
-@keyframes pulse{
-    0%{ transform: scale(1) rotate(45deg);}
-    50%{ transform: scale(1.2) rotate(45deg);}
-    100%{ transform: scale(1) rotate(45deg);}
-}
-
-/* النص */
-#text{
-    color:white;
-    font-size:30px;
-    text-align:center;
-    opacity:0;
-    transition:1s;
-    font-family:'Pacifico';
-}
-
-/* قلوب */
-.floating{
-    position:absolute;
-    animation: float 4s linear;
-}
-
-@keyframes float{
-    0%{transform:translateY(0);opacity:1;}
-    100%{transform:translateY(-800px);opacity:0;}
-}
-
-/* shake */
-.shake{
-    animation:shake 0.3s;
-}
-@keyframes shake{
-    0%{transform:translate(0);}
-    50%{transform:translate(5px);}
-    100%{transform:translate(0);}
-}
-</style>
-</head>
-
-<body>
-
-<div id="loading">Loading surprise...</div>
-<div id="heart" class="heart" style="display:none;"></div>
-<div id="text"></div>
-
-<audio id="music" src="music.mp3"></audio>
-
 <script>
-
-// typing
-function typeText(el, text){
-    el.innerHTML="";
-    let i=0;
-    let int=setInterval(()=>{
-        el.innerHTML+=text[i];
-        i++;
-        if(i>=text.length) clearInterval(int);
-    },50);
+// typing effect
+function typeText(element, text, speed = 50) {
+    element.textContent = "";
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }
+    }
+    typing();
 }
 
-// floating hearts
-function spawnHearts(){
-    for(let i=0;i<15;i++){
-        let h=document.createElement("div");
-        h.innerHTML="💖";
-        h.className="floating";
-        h.style.left=Math.random()*window.innerWidth+"px";
-        h.style.top="60%";
+// 💖 انفجار قلوب
+function explodeHearts() {
+    for (let i = 0; i < 20; i++) {
+        const h = document.createElement("div");
+        h.innerHTML = "💖";
+        h.classList.add("floating-heart");
+        h.style.left = Math.random() * window.innerWidth + "px";
+        h.style.bottom = "50%";
         document.body.appendChild(h);
-        setTimeout(()=>h.remove(),4000);
+        setTimeout(() => h.remove(), 4000);
     }
 }
 
-// المرحلة 1: شاشة سوداء
-setTimeout(()=>{
-    document.body.classList.add("pink");
-    document.getElementById("loading").style.display="none";
-    document.getElementById("heart").style.display="block";
-},4000);
+// floating hearts مستمر
+function createFloatingHeart() {
+    const heartEl = document.createElement("div");
+    heartEl.classList.add("floating-heart");
+    heartEl.innerHTML = "💗";
+    heartEl.style.left = Math.random() * window.innerWidth + "px";
+    heartEl.style.bottom = "0px";
+    document.body.appendChild(heartEl);
+    setTimeout(() => heartEl.remove(), 4000);
+}
+setInterval(createFloatingHeart, 600);
 
-// المرحلة 2: ضغط القلب
-document.getElementById("heart").onclick=()=>{
-    let heart=document.getElementById("heart");
+// Start button (ما غيرناه)
+startBtn.addEventListener('click', () => {
+    personName = nameInput.value || "Bestie 💖";
+    nameInput.style.display = "none";
+    startBtn.style.display = "none";
+    heart.style.display = 'block';
+});
+
+// ❤️ Heart click (طورناه)
+heart.addEventListener('click', () => {
+
+    // اهتزاز
+    if (navigator.vibrate) navigator.vibrate(200);
+
     heart.classList.add("shake");
+    explodeHearts();
 
-    // اهتزاز موبايل
-    if(navigator.vibrate) navigator.vibrate(200);
+    // النص الجديد (أفضل توزيع)
+    typeText(msg1, `Happy Birthday my bestiee 💕`);
+    msg1.style.opacity = '1';
 
-    spawnHearts();
+    setTimeout(() => {
+        typeText(msg1, `${personName}, I wish you a life full of happiness ✨`);
+    }, 2000);
 
-    setTimeout(()=>{
-        heart.style.display="none";
+    // إخفاء القلب
+    setTimeout(() => {
+        heart.style.display = 'none';
+        btn2.style.display = 'block';
+    }, 3500);
 
-        let text=document.getElementById("text");
-        text.style.opacity=1;
+    // تشغيل الموسيقى
+    music.play().catch(() => playButton.style.display = 'block');
+});
 
-        typeText(text,
-`Happy Birthday my bestie 💕
-I wish you a life full of happiness ✨
-— Raouf
+// btn2
+btn2.addEventListener('click', () => {
+    btn2.style.display = 'none';
+    typeText(msg2, "This is not everything... 👀");
+    msg2.style.opacity = '1';
 
-Now check your gift 🎁`);
+    setTimeout(() => {
+        msg2.style.opacity = '0';
+        btn3.style.display = 'block';
+    }, 2500);
+});
 
-        // تشغيل صوت
-        document.getElementById("music").play().catch(()=>{});
+// btn3 (النهاية القوية)
+btn3.addEventListener('click', () => {
+    btn3.style.display = 'none';
 
-    },500);
-};
+    typeText(msg3, "🎁 Now check your gift 🎁");
+    msg3.style.opacity = '1';
+
+    confetti({
+        particleCount: 200,
+        spread: 120,
+        origin: { y: 0.6 }
+    });
+
+    setTimeout(() => {
+        extraBtn.style.display = 'block';
+    }, 1500);
+});
+
+// extraBtn (لمسة أخيرة)
+extraBtn.addEventListener('click', () => {
+    extraBtn.style.display = 'none';
+
+    typeText(msg3, "Made with 💖 just for you — Raouf");
+    msg3.style.opacity = '1';
+
+    confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.6 }
+    });
+});
 </script>
-
-</body>
-</html>
