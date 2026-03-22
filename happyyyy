@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a; /* Dark theme initially */
+            transition: background-color 2s ease-in-out, color 2s ease-in-out;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+
+        .heart-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            display: none; /* Hidden initially */
+            animation: spawnHeart 1s forwards;
+            cursor: pointer;
+        }
+
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: red;
+            transform: translateY(-50%) translateX(-50%) rotate(45deg);
+            opacity: 0.8;
+            animation: beat 1s infinite alternate;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: red;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 50%;
+            top: 0;
+        }
+
+        #message {
+            font-size: 3em;
+            font-weight: bold;
+            color: #ffffff; /* White text */
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            position: absolute;
+            z-index: 10;
+        }
+
+        @keyframes beat {
+            0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+            100% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
+        }
+
+        @keyframes spawnHeart {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="message"></div>
+
+    <div class="heart-container" id="birthdayHeart">
+        <div class="heart"></div>
+    </div>
+
+    <audio id="birthdayMusic" src="music.mp3" preload="auto"></audio>
+
+    <script>
+        const body = document.body;
+        const birthdayHeart = document.getElementById('birthdayHeart');
+        const messageDiv = document.getElementById('message');
+        const birthdayMusic = document.getElementById('birthdayMusic');
+
+        // Initial dark theme
+        body.style.backgroundColor = '#1a1a1a';
+        body.style.color = '#ffffff';
+
+        // Change to pink theme after a few seconds
+        setTimeout(() => {
+            body.style.backgroundColor = '#ff69b4'; // Pink theme
+            body.style.color = '#000000'; // Black text for contrast
+            birthdayHeart.style.display = 'block'; // Make the heart visible
+        }, 3000); // 3 seconds
+
+        // Handle heart click
+        birthdayHeart.addEventListener('click', () => {
+            messageDiv.textContent = 'Happy birthday my bestieee i wish you have great life from raouf 💕💕💕';
+            messageDiv.style.opacity = '1';
+            birthdayMusic.play();
+            birthdayHeart.style.display = 'none'; // Hide heart after click
+        });
+
+        // Ensure music loops
+        birthdayMusic.addEventListener('ended', () => {
+            birthdayMusic.currentTime = 0;
+            birthdayMusic.play();
+        });
+    </script>
+
+</body>
+</html>
