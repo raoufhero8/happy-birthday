@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte à rebours spécial</title>
+    <style>
+        body {
+            background-color: #FFC0CB; /* Lovely pink background */
+            font-family: 'Segoe Script', cursive, sans-serif; /* Beautiful font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #800080; /* Darker purple for text */
+            text-align: center;
+            margin: 0;
+        }
+        .countdown-container {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite alternate;
+        }
+        .countdown-title {
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        .countdown-timer {
+            font-size: 2.5em;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .time-unit span {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .unit-label {
+            font-size: 0.8em;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+Script&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="countdown-container">
+        <div class="countdown-title">
+            Un doux compte à rebours !
+        </div>
+        <div class="countdown-timer">
+            <div class="time-unit">
+                <span id="days"></span>
+                <span class="unit-label">Jours</span>
+            </div>
+            <div class="time-unit">
+                <span id="hours"></span>
+                <span class="unit-label">Heures</span>
+            </div>
+            <div class="time-unit">
+                <span id="minutes"></span>
+                <span class="unit-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span id="seconds"></span>
+                <span class="unit-label">Secondes</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const countdownDate = new Date("2026-03-22T00:00:00").getTime(); // Start date for reference, though we are counting down TO 07/04/2026
+        const targetDate = new Date("2026-04-07T00:00:00").getTime(); // End date
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // If the countdown is over, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.querySelector('.countdown-timer').innerHTML = "<h2>Le temps est écoulé !</h2>";
+                return;
+            }
+
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="demo"
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+
+        }, 1000);
+    </script>
+
+</body>
+</html>
