@@ -246,7 +246,36 @@ btn3.addEventListener('click', () => {
         origin: { y: 0.6 }
     });
 });
+// بعد 3 ثواني من ظهور الرسالة الأخيرة
+setTimeout(() => {
+    const finalMsg = document.createElement("div");
+    finalMsg.textContent = "A little magic for the birthday star ✨ – Raouf";
+    finalMsg.style.fontFamily = "'Pacifico', cursive";
+    finalMsg.style.fontSize = "1.8em";
+    finalMsg.style.color = "#fff";
+    finalMsg.style.opacity = "0";
+    finalMsg.style.textAlign = "center";
+    finalMsg.style.marginTop = "20px";
+    finalMsg.style.transition = "opacity 2s";
 
+    document.body.appendChild(finalMsg);
+
+    setTimeout(() => {
+        finalMsg.style.opacity = "1";
+
+        // اختياري: نجعل قلوب صغيرة تطير مع الرسالة
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement("div");
+            heart.classList.add("floating-heart");
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.bottom = "0px";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+    }, 100);
+}, 3000);
 // music loop
 music.addEventListener('ended', () => {
     music.currentTime = 0;
