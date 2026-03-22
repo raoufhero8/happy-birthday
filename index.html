@@ -1,15 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Meriem!</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fc6076);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.heart-container {
+    width: 120px;
+    height: 120px;
+    display: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    animation: spawnHeart 1s forwards;
+    position: relative;
+}
+.heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: red;
+    transform: translate(-50%, -50%) rotate(45deg);
+    opacity: 0.8;
+    animation: beat 1s infinite alternate;
+}
+.heart::before,
+.heart::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: red;
+    border-radius: 50%;
+}
+.heart::before { top: -50%; left: 0; }
+.heart::after { left: 50%; top: 0; }
+.message {
+    font-size: 2em;
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    margin: 10px 0;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    color: white;
+}
+button {
+    padding: 12px 25px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ff69b4;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    display: none;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+button:hover {
+    background-color: #ff4da6;
+    transform: scale(1.05);
+}
+input {
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+    margin-bottom:10px;
+}
+@keyframes beat {
+    0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+    100% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
+}
+@keyframes spawnHeart {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+.shake {
+    animation: shake 0.5s;
+}
+.floating-heart {
+    position: absolute;
+    font-size: 20px;
+    animation: floatUp 4s linear infinite;
+}
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-800px); opacity: 0; }
+}
+.signature {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.5em;
+    color: white;
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+/* شاشة تهتز */
+@keyframes screenShake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(-5px,5px); }
+  50% { transform: translate(5px,-5px); }
+  75% { transform: translate(-5px,5px); }
+  100% { transform: translate(0,0); }
+}
+.screen-shake {
+  animation: screenShake 0.5s;
+}
+</style>
+</head>
+<body>
+
+<input type="text" id="nameInput" placeholder="to Meriem 💕🎂">
+<button id="startBtn" style="display:block;">Start to Meriem 🎉</button>
+
+<div class="heart-container" id="birthdayHeart">
+    <div class="heart"></div>
+</div>
+
+<div class="message" id="msg1"></div>
+<div class="message" id="msg2"></div>
+<div class="message" id="msg3"></div>
+<button id="btn2">Click Me</button>
+<button id="btn3">The Real Gift!</button>
+<button id="extraBtn">Additional Info</button>
+
+<audio id="music" src="music.mp3" preload="auto"></audio>
+<button id="playButton">Play Music 🎵</button>
+
+<div class="signature" id="signature">For you by Raouf</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-// اسم المستخدم والبدء
 const nameInput = document.getElementById('nameInput');
 const startBtn = document.getElementById('startBtn');
 const heart = document.getElementById('birthdayHeart');
 const msg1 = document.getElementById('msg1');
+const msg2 = document.getElementById('msg2');
+const msg3 = document.getElementById('msg3');
+const btn2 = document.getElementById('btn2');
+const btn3 = document.getElementById('btn3');
+const extraBtn = document.getElementById('extraBtn');
 const music = document.getElementById('music');
 const playButton = document.getElementById('playButton');
 const signature = document.getElementById('signature');
+const body = document.body;
 
 let personName = "";
-let giftIndex = 0;
+
+// typing effect
+function typeTextOnce(element, text, speed = 50) {
+    element.textContent = "";
+    let i = 0;
+    const interval = setInterval(() => {
+        element.textContent += text.charAt(i);
+        i++;
+        if(i >= text.length) clearInterval(interval);
+    }, speed);
+}
 
 // floating hearts
 function createFloatingHeart() {
@@ -23,72 +199,87 @@ function createFloatingHeart() {
 }
 setInterval(createFloatingHeart, 500);
 
-// typing effect
-function typeTextOnce(element, text, speed = 50) {
-    element.textContent = "";
-    let i = 0;
-    const interval = setInterval(() => {
-        element.textContent += text.charAt(i);
-        i++;
-        if(i >= text.length) clearInterval(interval);
-    }, speed);
-}
-
-// قائمة 300 هدية
-const birthdayGifts = [];
-for(let i=1;i<=300;i++){
-    birthdayGifts.push("Gift #" + i);
-}
-
-// Start button
+// Start button مع اهتزاز الشاشة + خلفية سوداء 3 ثواني
 startBtn.addEventListener('click', () => {
     personName = nameInput.value || "Bestie 💖";
     nameInput.style.display = "none";
     startBtn.style.display = "none";
-    heart.style.display = 'block';
+
+    body.classList.add("screen-shake");
+    body.style.background = "black";
+
+    setTimeout(() => {
+        body.classList.remove("screen-shake");
+        body.style.background = "linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fc6076)";
+        heart.style.display = 'block';
+    }, 3000);
 });
 
 // Heart click
 heart.addEventListener('click', () => {
-    // كل نقرة تظهر هدية واحدة فقط
-    if(giftIndex >= birthdayGifts.length){
-        typeTextOnce(msg1, `All gifts are shown! 🎉`);
-        msg1.style.opacity = '1';
-        signature.style.opacity = '1';
-        return;
-    }
-
-    const gift = birthdayGifts[giftIndex];
-    giftIndex++;
-
     heart.classList.add("shake");
     setTimeout(() => heart.classList.remove("shake"), 500);
 
-    typeTextOnce(msg1, `Happy Birthday ${personName}! Your gift: ${gift} 🎁`);
+    typeTextOnce(msg1, `Happy Birthday ${personName}! Wishing you a wonderful life! 💕`);
     msg1.style.opacity = '1';
 
     confetti({particleCount: 150, spread: 100, origin: {y: 0.6}});
 
-    // Heart disappears briefly ثم يظهر مرة ثانية بدون تكرار الرسالة
-    heart.style.display = 'none';
     setTimeout(() => {
-        heart.style.display = 'block';
+        heart.style.display = 'none';
         msg1.style.opacity = '0';
-    }, 2500);
+        btn2.style.display = 'block';
+    }, 3000);
 
-    // تشغيل الموسيقى
     music.play().catch(() => playButton.style.display = 'block');
 });
 
-// Play music button
-playButton.addEventListener('click', ()=>{
+// btn2 click
+btn2.addEventListener('click', () => {
+    btn2.style.display = 'none';
+    typeTextOnce(msg2, "This is just the beginning…");
+    msg2.style.opacity = '1';
+
+    setTimeout(() => {
+        msg2.style.opacity = '0';
+        btn3.style.display = 'block';
+    }, 2500);
+});
+
+// btn3 click → هدية حقيقية
+btn3.addEventListener('click', () => {
+    btn3.style.display = 'none';
+    typeTextOnce(msg3, "🎁 The real gift is waiting for you! 🎁");
+    msg3.style.opacity = '1';
+
+    confetti({particleCount: 150, spread: 100, origin: {y: 0.6}});
+
+    setTimeout(() => {
+        extraBtn.style.display = 'block';
+    }, 1000);
+});
+
+// extraBtn click
+extraBtn.addEventListener('click', () => {
+    extraBtn.style.display = 'none';
+    typeTextOnce(msg3, "A little magic for the birthday star ✨ – Raouf");
+    msg3.style.opacity = '1';
+
+    confetti({particleCount: 100, spread: 120, origin: {y: 0.6}});
+    signature.style.opacity = '1';
+});
+
+// play music button
+playButton.addEventListener('click', () => {
     music.play();
-    playButton.style.display='none';
+    playButton.style.display = 'none';
 });
 
 // music loop
-music.addEventListener('ended', ()=>{
+music.addEventListener('ended', () => {
     music.currentTime = 0;
     music.play();
 });
 </script>
+</body>
+</html>
