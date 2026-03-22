@@ -1,205 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #1a1a1a; /* Dark theme initially */
-            transition: background-color 2s ease-in-out, color 2s ease-in-out;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Interactive!</title>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-color: #1a1a1a;
+        transition: background-color 2s ease-in-out;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
 
-        .heart-container {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            display: none; /* Hidden initially */
-            animation: spawnHeart 1s forwards;
-            cursor: pointer;
-        }
+    .heart-container {
+        width: 100px;
+        height: 100px;
+        display: none;
+        cursor: pointer;
+        margin-bottom: 20px;
+        animation: spawnHeart 1s forwards;
+        position: relative;
+    }
 
-        .heart {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            background: red;
-            transform: translateY(-50%) translateX(-50%) rotate(45deg);
-            opacity: 0.8;
-            animation: beat 1s infinite alternate;
-        }
+    .heart {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        background: red;
+        transform: translate(-50%, -50%) rotate(45deg);
+        opacity: 0.8;
+        animation: beat 1s infinite alternate;
+    }
 
-        .heart::before,
-        .heart::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: red;
-            border-radius: 50%;
-        }
+    .heart::before,
+    .heart::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: red;
+        border-radius: 50%;
+    }
 
-        .heart::before {
-            top: -50%;
-            left: 0;
-        }
+    .heart::before { top: -50%; left: 0; }
+    .heart::after { left: 50%; top: 0; }
 
-        .heart::after {
-            left: 50%;
-            top: 0;
-        }
+    .message {
+        font-size: 2em;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        margin: 10px 0;
+    }
 
-        #message, #message2 {
-            font-size: 3em;
-            font-weight: bold;
-            color: #ffffff;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            position: absolute;
-            z-index: 10;
-        }
+    button {
+        padding: 10px 20px;
+        font-size: 1em;
+        background-color: #ff69b4;
+        color: #000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+        margin-top: 10px;
+    }
 
-        /* Floating small hearts for surprise 2 */
-        .floating-heart {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: pink;
-            transform: rotate(45deg);
-            opacity: 0.8;
-            animation: floatUp linear forwards;
-        }
+    @keyframes beat {
+        0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+        100% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
+    }
 
-        .floating-heart::before,
-        .floating-heart::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: pink;
-            border-radius: 50%;
-        }
-
-        .floating-heart::before { top: -50%; left: 0; }
-        .floating-heart::after { left: 50%; top: 0; }
-
-        @keyframes beat {
-            0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-            100% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
-        }
-
-        @keyframes spawnHeart {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(45deg); opacity: 1; }
-            100% { transform: translateY(-400px) rotate(45deg); opacity: 0; }
-        }
-
-        #playButton {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #ff69b4;
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-            z-index: 20;
-        }
-    </style>
+    @keyframes spawnHeart {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>
 </head>
 <body>
-
-    <div id="message"></div>
-    <div id="message2"></div>
 
     <div class="heart-container" id="birthdayHeart">
         <div class="heart"></div>
     </div>
 
-    <!-- الأغنية -->
-    <audio id="birthdayMusic" src="music.mp3" preload="auto"></audio>
+    <div class="message" id="msg1"></div>
+    <div class="message" id="msg2"></div>
+    <div class="message" id="msg3"></div>
 
-    <!-- زر تشغيل احتياطي -->
-    <button id="playButton">تشغيل الموسيقى 🎵</button>
+    <button id="btn2">Click Me</button>
+    <button id="btn3">The Real Gift!</button>
 
-    <script>
-        const body = document.body;
-        const birthdayHeart = document.getElementById('birthdayHeart');
-        const messageDiv = document.getElementById('message');
-        const messageDiv2 = document.getElementById('message2');
-        const birthdayMusic = document.getElementById('birthdayMusic');
-        const playButton = document.getElementById('playButton');
+    <audio id="music" src="music.mp3" preload="auto"></audio>
+    <button id="playButton">Play Music 🎵</button>
 
-        // Initial dark theme
-        body.style.backgroundColor = '#1a1a1a';
-        body.style.color = '#ffffff';
+<script>
+    const body = document.body;
+    const heart = document.getElementById('birthdayHeart');
+    const msg1 = document.getElementById('msg1');
+    const msg2 = document.getElementById('msg2');
+    const msg3 = document.getElementById('msg3');
+    const btn2 = document.getElementById('btn2');
+    const btn3 = document.getElementById('btn3');
+    const music = document.getElementById('music');
+    const playButton = document.getElementById('playButton');
 
-        // Change to pink theme after 3 seconds
+    // Start background transition
+    setTimeout(() => {
+        body.style.backgroundColor = '#ff69b4';
+        heart.style.display = 'block';
+    }, 2000);
+
+    // Click heart → first message
+    heart.addEventListener('click', () => {
+        msg1.textContent = "Happy birthday my bestieee! Wishing you a wonderful life! 💕";
+        msg1.style.opacity = '1';
+        heart.style.display = 'none';
+
+        music.play().catch(() => playButton.style.display = 'block');
+
         setTimeout(() => {
-            body.style.backgroundColor = '#ff69b4';
-            body.style.color = '#000000';
-            birthdayHeart.style.display = 'block';
+            msg1.style.opacity = '0';
+            btn2.style.display = 'block';
         }, 3000);
+    });
 
-        // Handle heart click (first surprise)
-        birthdayHeart.addEventListener('click', () => {
-            messageDiv.textContent = 'Happy birthday my bestieee i wish you have great life from raouf 💕💕💕';
-            messageDiv.style.opacity = '1';
-            birthdayHeart.style.display = 'none';
+    // Click btn2 → second message
+    btn2.addEventListener('click', () => {
+        btn2.style.display = 'none';
+        msg2.textContent = "This is not the beginning";
+        msg2.style.opacity = '1';
 
-            birthdayMusic.play().catch(() => {
-                playButton.style.display = 'block';
-            });
+        setTimeout(() => {
+            msg2.style.opacity = '0';
+            btn3.style.display = 'block';
+        }, 2000);
+    });
 
-            // Trigger second surprise after 2 seconds
-            setTimeout(() => {
-                messageDiv2.textContent = '🎉 Surprise 2: Sending you lots of love and joy! 🎉';
-                messageDiv2.style.opacity = '1';
+    // Click btn3 → final gift
+    btn3.addEventListener('click', () => {
+        btn3.style.display = 'none';
+        msg3.textContent = "🎁 The real gift is at school! 🎁";
+        msg3.style.opacity = '1';
+    });
 
-                // Create floating hearts
-                for(let i = 0; i < 30; i++) {
-                    const heart = document.createElement('div');
-                    heart.classList.add('floating-heart');
-                    heart.style.left = Math.random() * window.innerWidth + 'px';
-                    heart.style.animationDuration = (2 + Math.random() * 3) + 's';
-                    heart.style.fontSize = 20 + Math.random() * 20 + 'px';
-                    body.appendChild(heart);
+    // Music loop
+    music.addEventListener('ended', () => {
+        music.currentTime = 0;
+        music.play();
+    });
 
-                    // Remove after animation
-                    setTimeout(() => body.removeChild(heart), 5000);
-                }
-            }, 2000);
-        });
-
-        // Loop the music
-        birthdayMusic.addEventListener('ended', () => {
-            birthdayMusic.currentTime = 0;
-            birthdayMusic.play();
-        });
-
-        // Play button fallback
-        playButton.addEventListener('click', () => {
-            birthdayMusic.play();
-            playButton.style.display = 'none';
-        });
-    </script>
+    playButton.addEventListener('click', () => {
+        music.play();
+        playButton.style.display = 'none';
+    });
+</script>
 
 </body>
 </html>
