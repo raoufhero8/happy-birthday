@@ -217,15 +217,16 @@ function createFloatingHeart() {
 // =====================
 // العد التنازلي 5 دقائق
 // =====================
-const now = new Date().getTime();
-const targetDate = now + 5*60*1000; // 5 دقائق من الآن
+const targetDate = new Date().getTime() + 5*60*1000; // 5 دقائق من الآن
 
 const countdownInterval = setInterval(() => {
  const now = new Date().getTime();
- const distance = targetDate - now;
+ let distance = targetDate - now;
 
- if (distance < 0) {
+ if(distance < 0) {
  clearInterval(countdownInterval);
+ minutesEl.textContent = "00";
+ secondsEl.textContent = "00";
  countdownContainer.style.display = 'none';
  startBtn.style.display = 'block';
  return;
@@ -234,8 +235,8 @@ const countdownInterval = setInterval(() => {
  const minutes = Math.floor(distance / (1000*60));
  const seconds = Math.floor((distance % (1000*60)) / 1000);
 
- minutesEl.textContent = minutes;
- secondsEl.textContent = seconds;
+ minutesEl.textContent = minutes.toString().padStart(2,'0');
+ secondsEl.textContent = seconds.toString().padStart(2,'0');
 
 }, 1000);
 
