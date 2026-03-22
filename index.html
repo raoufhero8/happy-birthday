@@ -18,6 +18,7 @@ body {
     animation: gradientBG 10s ease infinite;
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
+    position: relative;
 }
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
@@ -32,6 +33,7 @@ body {
     margin-bottom: 20px;
     animation: spawnHeart 1s forwards;
     position: relative;
+    z-index: 2;
 }
 .heart {
     position: absolute;
@@ -42,7 +44,7 @@ body {
     background: red;
     transform: translate(-50%, -50%) rotate(45deg);
     opacity: 0.8;
-    animation: beat 2s infinite alternate;
+    animation: beat 1s infinite alternate;
 }
 .heart::before,
 .heart::after {
@@ -64,6 +66,8 @@ body {
     margin: 10px 0;
     text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
     color: white;
+    z-index: 2;
+    position: relative;
 }
 button {
     padding: 12px 25px;
@@ -76,6 +80,8 @@ button {
     display: none;
     margin-top: 10px;
     transition: 0.3s;
+    z-index: 2;
+    position: relative;
 }
 button:hover {
     background-color: #ff4da6;
@@ -87,6 +93,8 @@ input {
     border:none;
     text-align:center;
     margin-bottom:10px;
+    z-index: 2;
+    position: relative;
 }
 @keyframes beat {
     0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
@@ -123,6 +131,8 @@ input {
     margin-top: 20px;
     opacity: 0;
     transition: opacity 2s ease-in-out;
+    z-index: 2;
+    position: relative;
 }
 /* شاشة تهتز */
 @keyframes screenShake {
@@ -134,6 +144,23 @@ input {
 }
 .screen-shake {
   animation: screenShake 0.5s;
+}
+/* انفجار النار */
+.fire-burst {
+    position: absolute;
+    width: 300%;
+    height: 300%;
+    top: -100%;
+    left: -100%;
+    background: radial-gradient(circle, rgba(255,140,0,0.8) 0%, rgba(255,69,0,0.6) 50%, rgba(0,0,0,0) 70%);
+    opacity: 0;
+    animation: fireExplode 2s forwards;
+    z-index: 1;
+}
+@keyframes fireExplode {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(1); }
 }
 </style>
 </head>
@@ -153,7 +180,7 @@ input {
 <button id="btn3">The Real Gift!</button>
 <button id="extraBtn">Additional Info</button>
 
-<audio id="music" src="music.mp3" preload="auto"></audio>
+<audio id="music" src="goldenbrown.mp3" preload="auto"></audio>
 <button id="playButton">Play Music 🎵</button>
 
 <div class="signature" id="signature">For you by Raouf</div>
@@ -199,20 +226,33 @@ function createFloatingHeart() {
 }
 setInterval(createFloatingHeart, 500);
 
-// Start button مع اهتزاز الشاشة + خلفية سوداء 3 ثواني
+// Start button مع اهتزاز + انفجار نار + خلفية سوداء 2 ثواني
 startBtn.addEventListener('click', () => {
     personName = nameInput.value || "Bestie 💖";
     nameInput.style.display = "none";
     startBtn.style.display = "none";
 
+    // اهتزاز الشاشة فورًا
     body.classList.add("screen-shake");
+
+    // انفجار النار
+    const fire = document.createElement("div");
+    fire.classList.add("fire-burst");
+    body.appendChild(fire);
+
+    // شاشة سوداء
     body.style.background = "black";
 
+    // بعد 2 ثانية، ترجع الخلفية الوردية ويظهر القلب
     setTimeout(() => {
+        fire.remove();
         body.classList.remove("screen-shake");
         body.style.background = "linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fc6076)";
         heart.style.display = 'block';
-    }, 3000);
+    }, 2000);
+
+    // تشغيل الأغنية
+    music.play().catch(() => playButton.style.display = 'block');
 });
 
 // Heart click
@@ -230,8 +270,6 @@ heart.addEventListener('click', () => {
         msg1.style.opacity = '0';
         btn2.style.display = 'block';
     }, 3000);
-
-    music.play().catch(() => playButton.style.display = 'block');
 });
 
 // btn2 click
@@ -246,10 +284,10 @@ btn2.addEventListener('click', () => {
     }, 2500);
 });
 
-// btn3 click → هدية حقيقية
+// btn3 click
 btn3.addEventListener('click', () => {
     btn3.style.display = 'none';
-    typeTextOnce(msg3, "🎁 The real gift is waiting for you in the school! 🎁");
+    typeTextOnce(msg3, "🎁 The real gift is waiting for you! 🎁");
     msg3.style.opacity = '1';
 
     confetti({particleCount: 150, spread: 100, origin: {y: 0.6}});
@@ -262,7 +300,7 @@ btn3.addEventListener('click', () => {
 // extraBtn click
 extraBtn.addEventListener('click', () => {
     extraBtn.style.display = 'none';
-    typeTextOnce(msg3, "A little magic for the birthday star ✨");
+    typeTextOnce(msg3, "A little magic for the birthday star ✨ – Raouf");
     msg3.style.opacity = '1';
 
     confetti({particleCount: 100, spread: 120, origin: {y: 0.6}});
