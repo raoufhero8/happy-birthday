@@ -26,16 +26,26 @@ body {
     100% { background-position: 0% 50%; }
 }
 .heart-container {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     display: none;
     cursor: pointer;
     margin-bottom: 20px;
-    animation: spawnHeart 1s forwards;
     position: relative;
     z-index: 2;
 }
-.heart {
+.heart-container span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size: 2em;
+    color: white;
+    font-family: 'Pacifico', cursive;
+}
+.heart-container .heart-shape {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -44,10 +54,9 @@ body {
     background: red;
     transform: translate(-50%, -50%) rotate(45deg);
     opacity: 0.8;
-    animation: beat 1s infinite alternate;
 }
-.heart::before,
-.heart::after {
+.heart-container .heart-shape::before,
+.heart-container .heart-shape::after {
     content: '';
     position: absolute;
     width: 100%;
@@ -55,8 +64,9 @@ body {
     background: red;
     border-radius: 50%;
 }
-.heart::before { top: -50%; left: 0; }
-.heart::after { left: 50%; top: 0; }
+.heart-container .heart-shape::before { top: -50%; left: 0; }
+.heart-container .heart-shape::after { left: 50%; top: 0; }
+
 .message {
     font-size: 2em;
     font-family: 'Pacifico', cursive;
@@ -96,28 +106,11 @@ input {
     z-index: 2;
     position: relative;
 }
-@keyframes beat {
-    0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
-    100% { transform: translate(-50%, -50%) rotate(45deg) scale(1.1); }
-}
-@keyframes spawnHeart {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-.shake {
-    animation: shake 0.5s;
-}
 .floating-heart {
     position: absolute;
-    font-size: 20px;
+    font-size: 25px;
     animation: floatUp 4s linear infinite;
+    z-index: 1;
 }
 @keyframes floatUp {
     0% { transform: translateY(0); opacity: 1; }
@@ -134,34 +127,6 @@ input {
     z-index: 2;
     position: relative;
 }
-/* شاشة تهتز */
-@keyframes screenShake {
-  0% { transform: translate(0,0); }
-  25% { transform: translate(-5px,5px); }
-  50% { transform: translate(5px,-5px); }
-  75% { transform: translate(-5px,5px); }
-  100% { transform: translate(0,0); }
-}
-.screen-shake {
-  animation: screenShake 0.5s;
-}
-/* انفجار النار */
-.fire-burst {
-    position: absolute;
-    width: 300%;
-    height: 300%;
-    top: -100%;
-    left: -100%;
-    background: radial-gradient(circle, rgba(255,140,0,0.8) 0%, rgba(255,69,0,0.6) 50%, rgba(0,0,0,0) 70%);
-    opacity: 0;
-    animation: fireExplode 2s forwards;
-    z-index: 1;
-}
-@keyframes fireExplode {
-    0% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1.2); }
-    100% { opacity: 0; transform: scale(1); }
-}
 </style>
 </head>
 <body>
@@ -169,8 +134,9 @@ input {
 <input type="text" id="nameInput" placeholder="to Meriem 💕🎂">
 <button id="startBtn" style="display:block;">Start to Meriem 🎉</button>
 
-<div class="heart-container" id="birthdayHeart">
-    <div class="heart"></div>
+<div class="heart-container" id="clickHeart">
+    <div class="heart-shape"></div>
+    <span>اضغطه 💗</span>
 </div>
 
 <div class="message" id="msg1"></div>
@@ -180,104 +146,72 @@ input {
 <button id="btn3">The Real Gift!</button>
 <button id="extraBtn">Additional Info</button>
 
-<audio id="music" src="goldenbrown.mp3" preload="auto"></audio>
-<button id="playButton">Play Music 🎵</button>
-
 <div class="signature" id="signature">For you by Raouf</div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
 const nameInput = document.getElementById('nameInput');
 const startBtn = document.getElementById('startBtn');
-const heart = document.getElementById('birthdayHeart');
+const clickHeart = document.getElementById('clickHeart');
 const msg1 = document.getElementById('msg1');
 const msg2 = document.getElementById('msg2');
 const msg3 = document.getElementById('msg3');
 const btn2 = document.getElementById('btn2');
 const btn3 = document.getElementById('btn3');
 const extraBtn = document.getElementById('extraBtn');
-const music = document.getElementById('music');
-const playButton = document.getElementById('playButton');
 const signature = document.getElementById('signature');
 const body = document.body;
 
 let personName = "";
 
-// typing effect
-function typeTextOnce(element, text, speed = 50) {
-    element.textContent = "";
-    let i = 0;
-    const interval = setInterval(() => {
-        element.textContent += text.charAt(i);
-        i++;
-        if(i >= text.length) clearInterval(interval);
-    }, speed);
-}
-
 // floating hearts
 function createFloatingHeart() {
     const heartEl = document.createElement("div");
     heartEl.classList.add("floating-heart");
-    heartEl.innerHTML = "💖";
+    heartEl.innerHTML = "💗";
     heartEl.style.left = Math.random() * window.innerWidth + "px";
     heartEl.style.bottom = "0px";
     document.body.appendChild(heartEl);
     setTimeout(() => heartEl.remove(), 4000);
 }
-setInterval(createFloatingHeart, 500);
 
-// Start button مع اهتزاز + انفجار نار + خلفية سوداء 2 ثواني
+// Start button
 startBtn.addEventListener('click', () => {
-    personName = nameInput.value || "Bestie 💖";
+    personName = nameInput.value || "Bestie 💗";
     nameInput.style.display = "none";
     startBtn.style.display = "none";
 
-    // اهتزاز الشاشة فورًا
-    body.classList.add("screen-shake");
+    clickHeart.style.display = "block";
 
-    // انفجار النار
-    const fire = document.createElement("div");
-    fire.classList.add("fire-burst");
-    body.appendChild(fire);
-
-    // شاشة سوداء
-    body.style.background = "black";
-
-    // بعد 2 ثانية، ترجع الخلفية الوردية ويظهر القلب
-    setTimeout(() => {
-        fire.remove();
-        body.classList.remove("screen-shake");
-        body.style.background = "linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fc6076)";
-        heart.style.display = 'block';
-    }, 2000);
-
-    // تشغيل الأغنية
-    music.play().catch(() => playButton.style.display = 'block');
+    // Start floating hearts
+    setInterval(createFloatingHeart, 500);
 });
 
-// Heart click
-heart.addEventListener('click', () => {
-    heart.classList.add("shake");
-    setTimeout(() => heart.classList.remove("shake"), 500);
+// Click heart
+clickHeart.addEventListener('click', () => {
+    clickHeart.style.display = "none";
 
-    typeTextOnce(msg1, `Happy Birthday ${personName}! Wishing you a wonderful life! 💕`);
-    msg1.style.opacity = '1';
-
-    confetti({particleCount: 150, spread: 100, origin: {y: 0.6}});
+    // شاشة سوداء لمدة 4 ثواني
+    body.style.background = "black";
 
     setTimeout(() => {
-        heart.style.display = 'none';
-        msg1.style.opacity = '0';
-        btn2.style.display = 'block';
-    }, 3000);
+        body.style.background = "linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #fc6076)";
+        msg1.style.opacity = '1';
+        msg1.textContent = `Happy Birthday ${personName}! Wishing you a wonderful life! 💕`;
+
+        confetti({particleCount: 150, spread: 100, origin: {y: 0.6}});
+        setTimeout(() => {
+            msg1.style.opacity = '0';
+            btn2.style.display = 'block';
+        }, 3000);
+    }, 4000);
 });
 
 // btn2 click
 btn2.addEventListener('click', () => {
     btn2.style.display = 'none';
-    typeTextOnce(msg2, "This is just the beginning…");
     msg2.style.opacity = '1';
-
+    msg2.textContent = "This is just the beginning…";
     setTimeout(() => {
         msg2.style.opacity = '0';
         btn3.style.display = 'block';
@@ -287,8 +221,8 @@ btn2.addEventListener('click', () => {
 // btn3 click
 btn3.addEventListener('click', () => {
     btn3.style.display = 'none';
-    typeTextOnce(msg3, "🎁 The real gift is waiting for you! 🎁");
     msg3.style.opacity = '1';
+    msg3.textContent = "🎁 The real gift is waiting for you! 🎁";
 
     confetti({particleCount: 150, spread: 100, origin: {y: 0.6}});
 
@@ -300,23 +234,10 @@ btn3.addEventListener('click', () => {
 // extraBtn click
 extraBtn.addEventListener('click', () => {
     extraBtn.style.display = 'none';
-    typeTextOnce(msg3, "A little magic for the birthday star ✨ – Raouf");
-    msg3.style.opacity = '1';
+    msg3.textContent = "A little magic for the birthday star ✨ – Raouf";
+    signature.style.opacity = '1';
 
     confetti({particleCount: 100, spread: 120, origin: {y: 0.6}});
-    signature.style.opacity = '1';
-});
-
-// play music button
-playButton.addEventListener('click', () => {
-    music.play();
-    playButton.style.display = 'none';
-});
-
-// music loop
-music.addEventListener('ended', () => {
-    music.currentTime = 0;
-    music.play();
 });
 </script>
 </body>
