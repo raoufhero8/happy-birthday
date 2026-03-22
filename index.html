@@ -135,7 +135,7 @@ button:hover {
 
 <div class="heart-container" id="clickHeart">
     <div class="heart-shape"></div>
-    <span>Click it </span>
+    <span>Click it</span>
 </div>
 
 <div class="message" id="msg1"></div>
@@ -179,7 +179,7 @@ function createFloatingHeart() {
 
 // Start button
 startBtn.addEventListener('click', () => {
-    personName = nameInput.value || "Bestie 💗";
+    personName = nameInput.value || "Bestieee 💗";
     nameInput.style.display = "none";
     startBtn.style.display = "none";
 
@@ -187,20 +187,14 @@ startBtn.addEventListener('click', () => {
 
     // Start floating hearts
     setInterval(createFloatingHeart, 500);
-
-    // Start music
-    music.play().catch(() => console.log("Music blocked"));
-});
-
-// Loop music
-music.addEventListener('ended', () => {
-    music.currentTime = 0;
-    music.play();
 });
 
 // Click heart
 clickHeart.addEventListener('click', () => {
     clickHeart.style.display = "none";
+
+    // Play music only when heart is clicked
+    music.play().catch(() => console.log("Music blocked"));
 
     // شاشة سوداء 4 ثواني
     body.style.background = "black";
@@ -245,7 +239,7 @@ btn3.addEventListener('click', () => {
 // extraBtn click
 extraBtn.addEventListener('click', () => {
     extraBtn.style.display = 'none';
-    msg3.textContent = "A little magic for the birthday star ✨ – Raouf";
+    msg3.textContent = "A little magic for the birthday star ✨";
     signature.style.opacity = '1';
 
     confetti({particleCount: 100, spread: 120, origin: {y: 0.6}});
