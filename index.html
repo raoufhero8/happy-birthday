@@ -136,30 +136,30 @@ input {
 </head>
 <body>
 
-<!-- ادخال الاسم -->
+<!-- Input for name -->
 <input type="text" id="nameInput" placeholder="to Meriem 💕🎂">
 <button id="startBtn" style="display:block;">Start 🎉</button>
 
-<!-- القلب -->
+<!-- Heart -->
 <div class="heart-container" id="birthdayHeart">
     <div class="heart"></div>
 </div>
 
-<!-- الرسائل -->
+<!-- Messages -->
 <div class="message" id="msg1"></div>
 <div class="message" id="msg2"></div>
 <div class="message" id="msg3"></div>
 
-<!-- الأزرار التالية -->
+<!-- Buttons -->
 <button id="btn2">Click Me</button>
 <button id="btn3">The Real Gift!</button>
+<button id="extraBtn">Additional Info</button>
 
-<!-- الموسيقى -->
+<!-- Music -->
 <audio id="music" src="music.mp3" preload="auto"></audio>
 <button id="playButton">Play Music 🎵</button>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
 <script>
 const body = document.body;
 const heart = document.getElementById('birthdayHeart');
@@ -168,6 +168,7 @@ const msg2 = document.getElementById('msg2');
 const msg3 = document.getElementById('msg3');
 const btn2 = document.getElementById('btn2');
 const btn3 = document.getElementById('btn3');
+const extraBtn = document.getElementById('extraBtn');
 const music = document.getElementById('music');
 const playButton = document.getElementById('playButton');
 
@@ -192,17 +193,17 @@ function typeText(element, text, speed = 50) {
 
 // floating hearts
 function createFloatingHeart() {
-    const heart = document.createElement("div");
-    heart.classList.add("floating-heart");
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.bottom = "0px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 4000);
+    const heartEl = document.createElement("div");
+    heartEl.classList.add("floating-heart");
+    heartEl.innerHTML = "💖";
+    heartEl.style.left = Math.random() * window.innerWidth + "px";
+    heartEl.style.bottom = "0px";
+    document.body.appendChild(heartEl);
+    setTimeout(() => heartEl.remove(), 4000);
 }
 setInterval(createFloatingHeart, 500);
 
-// start
+// Start button
 startBtn.addEventListener('click', () => {
     personName = nameInput.value || "Bestie 💖";
     nameInput.style.display = "none";
@@ -210,49 +211,26 @@ startBtn.addEventListener('click', () => {
     heart.style.display = 'block';
 });
 
-// heart click
+// Heart click
 heart.addEventListener('click', () => {
     heart.classList.add("shake");
     setTimeout(() => heart.classList.remove("shake"), 500);
 
-    // رسالة أولى
     typeText(msg1, `Happy birthday ${personName}! Wishing you a wonderful life! 💕`);
     msg1.style.opacity = '1';
 
-    // رسالة سحرية تحت القلب بمسافة
-    const magicMsg = document.createElement("div");
-    magicMsg.textContent = "A little magic for the birthday star ✨ – Raouf";
-    magicMsg.style.fontFamily = "'Pacifico', cursive";
-    magicMsg.style.fontSize = "1.5em";
-    magicMsg.style.color = "#fff";
-    magicMsg.style.opacity = "0";
-    magicMsg.style.textAlign = "center";
-    magicMsg.style.marginTop = "80px"; // المسافة تحت القلب
-
-    body.appendChild(magicMsg);
-
+    // Fade out heart after 3s
     setTimeout(() => {
-        magicMsg.style.opacity = "1"; // fade-in
-    }, 100);
-
-    // بعد 3 ثواني تختفي الرسالة السحرية مع القلب
-    setTimeout(() => {
-        magicMsg.style.opacity = "0";
         heart.style.display = 'none';
-
-        // بعد اختفاء القلب والرسالة السحرية تظهر الرسائل التالية
-        setTimeout(() => {
-            msg1.style.opacity = '0';
-            btn2.style.display = 'block';
-        }, 500);
-
+        msg1.style.opacity = '0';
+        btn2.style.display = 'block';
     }, 3000);
 
-    // تشغيل الموسيقى
+    // Play music
     music.play().catch(() => playButton.style.display = 'block');
 });
 
-// btn2
+// btn2 click
 btn2.addEventListener('click', () => {
     btn2.style.display = 'none';
     typeText(msg2, "This is just the beginning");
@@ -264,7 +242,7 @@ btn2.addEventListener('click', () => {
     }, 2500);
 });
 
-// btn3
+// btn3 click
 btn3.addEventListener('click', () => {
     btn3.style.display = 'none';
     typeText(msg3, "🎁 The real gift is at school! 🎁");
@@ -273,6 +251,24 @@ btn3.addEventListener('click', () => {
     confetti({
         particleCount: 150,
         spread: 100,
+        origin: { y: 0.6 }
+    });
+
+    // Show Additional Info button
+    setTimeout(() => {
+        extraBtn.style.display = 'block';
+    }, 1000);
+});
+
+// extraBtn click
+extraBtn.addEventListener('click', () => {
+    extraBtn.style.display = 'none';
+    typeText(msg3, "A little magic for the birthday star ✨ – Raouf");
+    msg3.style.opacity = '1';
+
+    confetti({
+        particleCount: 100,
+        spread: 120,
         origin: { y: 0.6 }
     });
 });
