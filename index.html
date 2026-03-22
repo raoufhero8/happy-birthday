@@ -8,7 +8,6 @@
 href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" 
 rel="stylesheet">
 <style>
-/* عام */
 body {
  display: flex;
  flex-direction: column;
@@ -44,7 +43,7 @@ body {
 .time-unit { display: flex; flex-direction: column; align-items: center; }
 .unit-label { font-size: 0.8em; margin-top: 5px; }
 
-/* زر */
+/* زر Start */
 button {
  padding: 12px 25px;
  font-family: 'Poppins', sans-serif;
@@ -148,23 +147,15 @@ button:hover { background-color: #ff4da6; transform: scale(1.05); }
 
 <!-- العد التنازلي -->
 <div class="countdown-container" id="countdownContainer">
- <div class="countdown-title">Un doux compte à rebours !</div>
+ <div class="countdown-title">Counting down to something special!</div>
  <div class="countdown-timer">
- <div class="time-unit">
- <span id="days"></span>
- <span class="unit-label">Jours</span>
- </div>
- <div class="time-unit">
- <span id="hours"></span>
- <span class="unit-label">Heures</span>
- </div>
  <div class="time-unit">
  <span id="minutes"></span>
  <span class="unit-label">Minutes</span>
  </div>
  <div class="time-unit">
  <span id="seconds"></span>
- <span class="unit-label">Secondes</span>
+ <span class="unit-label">Seconds</span>
  </div>
  </div>
 </div>
@@ -195,7 +186,6 @@ button:hover { background-color: #ff4da6; transform: scale(1.05); }
 <script 
 src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-// عناصر
 const startBtn = document.getElementById('startBtn');
 const clickHeart = document.getElementById('clickHeart');
 const msg1 = document.getElementById('msg1');
@@ -208,8 +198,6 @@ const signature = document.getElementById('signature');
 const body = document.body;
 const music = document.getElementById('music');
 const countdownContainer = document.getElementById('countdownContainer');
-const daysEl = document.getElementById('days');
-const hoursEl = document.getElementById('hours');
 const minutesEl = document.getElementById('minutes');
 const secondsEl = document.getElementById('seconds');
 
@@ -227,10 +215,10 @@ function createFloatingHeart() {
 }
 
 // =====================
-// العد التنازلي
+// العد التنازلي 5 دقائق
 // =====================
-const targetDate = new Date("2026-03-22T12:00:00").getTime(); // الوقت النهائي 
-للعد
+const now = new Date().getTime();
+const targetDate = now + 5*60*1000; // 5 دقائق من الآن
 
 const countdownInterval = setInterval(() => {
  const now = new Date().getTime();
@@ -238,18 +226,14 @@ const countdownInterval = setInterval(() => {
 
  if (distance < 0) {
  clearInterval(countdownInterval);
- countdownContainer.style.display = 'none'; // إخفاء العد
- startBtn.style.display = 'block'; // إظهار زر Start
+ countdownContainer.style.display = 'none';
+ startBtn.style.display = 'block';
  return;
  }
 
- const days = Math.floor(distance / (1000*60*60*24));
- const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
- const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+ const minutes = Math.floor(distance / (1000*60));
  const seconds = Math.floor((distance % (1000*60)) / 1000);
 
- daysEl.textContent = days;
- hoursEl.textContent = hours;
  minutesEl.textContent = minutes;
  secondsEl.textContent = seconds;
 
@@ -259,7 +243,7 @@ const countdownInterval = setInterval(() => {
 // Start button
 // =====================
 startBtn.addEventListener('click', () => {
- personName = "Meriem"; // تبقي النصوص كما هي
+ personName = "Meriem";
  startBtn.style.display = "none";
  clickHeart.style.display = "block";
 
