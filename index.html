@@ -136,20 +136,25 @@ input {
 </head>
 <body>
 
-<input type="text" id="nameInput" placeholder="Meriem🎂">
+<!-- ادخال الاسم -->
+<input type="text" id="nameInput" placeholder="to Meriem 💕🎂">
 <button id="startBtn" style="display:block;">Start 🎉</button>
 
+<!-- القلب -->
 <div class="heart-container" id="birthdayHeart">
     <div class="heart"></div>
 </div>
 
+<!-- الرسائل -->
 <div class="message" id="msg1"></div>
 <div class="message" id="msg2"></div>
 <div class="message" id="msg3"></div>
 
+<!-- الأزرار التالية -->
 <button id="btn2">Click Me</button>
 <button id="btn3">The Real Gift!</button>
 
+<!-- الموسيقى -->
 <audio id="music" src="music.mp3" preload="auto"></audio>
 <button id="playButton">Play Music 🎵</button>
 
@@ -214,7 +219,7 @@ heart.addEventListener('click', () => {
     typeText(msg1, `Happy birthday ${personName}! Wishing you a wonderful life! 💕`);
     msg1.style.opacity = '1';
 
-    // رسالة سحرية تحت القلب
+    // رسالة سحرية تحت القلب بمسافة
     const magicMsg = document.createElement("div");
     magicMsg.textContent = "A little magic for the birthday star ✨ – Raouf";
     magicMsg.style.fontFamily = "'Pacifico', cursive";
@@ -222,12 +227,12 @@ heart.addEventListener('click', () => {
     magicMsg.style.color = "#fff";
     magicMsg.style.opacity = "0";
     magicMsg.style.textAlign = "center";
-    magicMsg.style.marginTop = "10px";
+    magicMsg.style.marginTop = "80px"; // المسافة تحت القلب
 
-    heart.appendChild(magicMsg);
+    body.appendChild(magicMsg);
 
     setTimeout(() => {
-        magicMsg.style.opacity = "1";
+        magicMsg.style.opacity = "1"; // fade-in
     }, 100);
 
     // بعد 3 ثواني تختفي الرسالة السحرية مع القلب
@@ -235,6 +240,7 @@ heart.addEventListener('click', () => {
         magicMsg.style.opacity = "0";
         heart.style.display = 'none';
 
+        // بعد اختفاء القلب والرسالة السحرية تظهر الرسائل التالية
         setTimeout(() => {
             msg1.style.opacity = '0';
             btn2.style.display = 'block';
