@@ -14,7 +14,7 @@
             background-color: #1a1a1a; /* Dark theme initially */
             transition: background-color 2s ease-in-out, color 2s ease-in-out;
             font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Prevent scrollbars */
+            overflow: hidden;
         }
 
         .heart-container {
@@ -58,16 +58,40 @@
             top: 0;
         }
 
-        #message {
+        #message, #message2 {
             font-size: 3em;
             font-weight: bold;
-            color: #ffffff; /* White text */
+            color: #ffffff;
             text-align: center;
             opacity: 0;
             transition: opacity 1s ease-in-out;
             position: absolute;
             z-index: 10;
         }
+
+        /* Floating small hearts for surprise 2 */
+        .floating-heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: pink;
+            transform: rotate(45deg);
+            opacity: 0.8;
+            animation: floatUp linear forwards;
+        }
+
+        .floating-heart::before,
+        .floating-heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: pink;
+            border-radius: 50%;
+        }
+
+        .floating-heart::before { top: -50%; left: 0; }
+        .floating-heart::after { left: 50%; top: 0; }
 
         @keyframes beat {
             0% { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
@@ -77,6 +101,11 @@
         @keyframes spawnHeart {
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+            100% { transform: translateY(-400px) rotate(45deg); opacity: 0; }
         }
 
         #playButton {
@@ -98,6 +127,7 @@
 <body>
 
     <div id="message"></div>
+    <div id="message2"></div>
 
     <div class="heart-container" id="birthdayHeart">
         <div class="heart"></div>
@@ -113,6 +143,7 @@
         const body = document.body;
         const birthdayHeart = document.getElementById('birthdayHeart');
         const messageDiv = document.getElementById('message');
+        const messageDiv2 = document.getElementById('message2');
         const birthdayMusic = document.getElementById('birthdayMusic');
         const playButton = document.getElementById('playButton');
 
@@ -120,23 +151,41 @@
         body.style.backgroundColor = '#1a1a1a';
         body.style.color = '#ffffff';
 
-        // Change to pink theme after a few seconds
+        // Change to pink theme after 3 seconds
         setTimeout(() => {
-            body.style.backgroundColor = '#ff69b4'; // Pink theme
-            body.style.color = '#000000'; // Black text for contrast
-            birthdayHeart.style.display = 'block'; // Make the heart visible
-        }, 3000); // 3 seconds
+            body.style.backgroundColor = '#ff69b4';
+            body.style.color = '#000000';
+            birthdayHeart.style.display = 'block';
+        }, 3000);
 
-        // Handle heart click
+        // Handle heart click (first surprise)
         birthdayHeart.addEventListener('click', () => {
             messageDiv.textContent = 'Happy birthday my bestieee i wish you have great life from raouf 💕💕💕';
             messageDiv.style.opacity = '1';
-            birthdayHeart.style.display = 'none'; // Hide heart after click
+            birthdayHeart.style.display = 'none';
 
             birthdayMusic.play().catch(() => {
-                // Show play button if browser blocks autoplay
                 playButton.style.display = 'block';
             });
+
+            // Trigger second surprise after 2 seconds
+            setTimeout(() => {
+                messageDiv2.textContent = '🎉 Surprise 2: Sending you lots of love and joy! 🎉';
+                messageDiv2.style.opacity = '1';
+
+                // Create floating hearts
+                for(let i = 0; i < 30; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('floating-heart');
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+                    heart.style.fontSize = 20 + Math.random() * 20 + 'px';
+                    body.appendChild(heart);
+
+                    // Remove after animation
+                    setTimeout(() => body.removeChild(heart), 5000);
+                }
+            }, 2000);
         });
 
         // Loop the music
