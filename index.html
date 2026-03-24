@@ -22,6 +22,7 @@ body {
     overflow:hidden;
     position:relative;
 }
+
 @keyframes gradientBG {
     0%{background-position:0% 50%}
     50%{background-position:100% 50%}
@@ -47,8 +48,9 @@ button{
     display:none;
     margin-top:10px;
     transition:0.3s;
+    box-shadow:0 0 15px rgba(255,105,180,0.6);
 }
-button:hover{transform:scale(1.05);}
+button:hover{transform:scale(1.08);}
 
 .heart-container{
     width:150px;
@@ -56,7 +58,14 @@ button:hover{transform:scale(1.05);}
     display:none;
     cursor:pointer;
     position:relative;
+    animation: beat 1s infinite;
 }
+
+@keyframes beat{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.15);}
+}
+
 .heart-container span{
     position:absolute;
     width:100%;
@@ -68,6 +77,7 @@ button:hover{transform:scale(1.05);}
     color:white;
     font-family:'Pacifico',cursive;
 }
+
 .heart-shape{
     position:absolute;
     top:50%;
@@ -96,6 +106,7 @@ button:hover{transform:scale(1.05);}
     transition:2s;
     color:white;
     text-align:center;
+    text-shadow:0 0 10px #fff,0 0 20px #ff69b4;
 }
 
 .floating-heart{
@@ -114,6 +125,36 @@ button:hover{transform:scale(1.05);}
     color:white;
     opacity:0;
     transition:2s;
+}
+
+/* SPARKLES */
+.sparkle{
+    position:absolute;
+    width:5px;
+    height:5px;
+    background:white;
+    border-radius:50%;
+    pointer-events:none;
+    animation: sparkleAnim 1s linear forwards;
+}
+@keyframes sparkleAnim{
+    to{
+        transform:translateY(-20px);
+        opacity:0;
+    }
+}
+
+/* FLASH EFFECT */
+.flash{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:white;
+    opacity:0;
+    pointer-events:none;
+    transition:0.6s;
 }
 </style>
 </head>
@@ -138,6 +179,8 @@ button:hover{transform:scale(1.05);}
 
 <div class="signature" id="signature">For you by Raouf</div>
 
+<div class="flash" id="flash"></div>
+
 <audio id="music" src="music.mp3"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -154,10 +197,11 @@ const btn3 = document.getElementById('btn3');
 const extraBtn = document.getElementById('extraBtn');
 const signature = document.getElementById('signature');
 const music = document.getElementById('music');
+const flash = document.getElementById('flash');
 
 let started = false;
 
-// قلوب طايرة
+/* FLOATING HEARTS */
 function createHeart(){
     const el = document.createElement("div");
     el.className="floating-heart";
@@ -167,20 +211,29 @@ function createHeart(){
     setTimeout(()=>el.remove(),4000);
 }
 
-// START
+/* SPARKLES FOLLOW MOUSE */
+document.addEventListener("mousemove",(e)=>{
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=e.clientX+"px";
+    s.style.top=e.clientY+"px";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1000);
+});
+
+/* START */
 startBtn.onclick = () => {
-    const name = nameInput.value || "Bestieee 💗";
     nameInput.style.display="none";
     startBtn.style.display="none";
     clickHeart.style.display="block";
 
     if(!started){
-        setInterval(createHeart,180);
+        setInterval(createHeart,150);
         started=true;
     }
 };
 
-// CLICK HEART
+/* CLICK HEART */
 clickHeart.onclick = () => {
     clickHeart.style.display="none";
     music.play().catch(()=>{});
@@ -189,18 +242,20 @@ clickHeart.onclick = () => {
 
     setTimeout(()=>{
         document.body.style.background="linear-gradient(-45deg,#ff9a9e,#fad0c4,#ffdde1,#fc6076)";
+        
         msg1.style.opacity=1;
         msg1.innerText="Happy Birthday My bestieeee💗!May this moment stay with you forever 💕";
 
-        confetti();
+        confetti({particleCount:200,spread:120,origin:{y:0.6}});
+
         setTimeout(()=>{
             msg1.style.opacity=0;
             btn2.style.display="block";
         },7000);
-    },4000);
+    },3000);
 };
 
-// BUTTON 2
+/* BUTTON 2 */
 btn2.onclick = () => {
     btn2.style.display="none";
     msg2.style.opacity=1;
@@ -212,22 +267,34 @@ btn2.onclick = () => {
     },2500);
 };
 
-// BUTTON 3
+/* BUTTON 3 */
 btn3.onclick = () => {
     btn3.style.display="none";
     msg3.style.opacity=1;
     msg3.innerText="🎁 The real gift is waiting for you in the school! 🎁";
 
-    confetti();
+    confetti({particleCount:300,spread:150});
+
     setTimeout(()=>extraBtn.style.display="block",1000);
 };
 
-// FINAL
+/* FINAL WOW */
 extraBtn.onclick = () => {
     extraBtn.style.display="none";
+
     msg3.innerText="12 PM… you’ll understand 💗";
     signature.style.opacity=1;
-    confetti();
+
+    /* FLASH */
+    flash.style.opacity=1;
+    setTimeout(()=>flash.style.opacity=0,600);
+
+    /* HEART RAIN */
+    for(let i=0;i<50;i++){
+        setTimeout(createHeart,i*100);
+    }
+
+    confetti({particleCount:500,spread:180,scalar:1.2});
 };
 </script>
 
