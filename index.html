@@ -211,7 +211,7 @@ function createHeart(){
     setTimeout(()=>el.remove(),4000);
 }
 
-/* SPARKLES FOLLOW MOUSE */
+/* SPARKLES */
 document.addEventListener("mousemove",(e)=>{
     const s=document.createElement("div");
     s.className="sparkle";
@@ -240,19 +240,43 @@ clickHeart.onclick = () => {
 
     document.body.style.background="black";
 
-    setTimeout(()=>{
-        document.body.style.background="linear-gradient(-45deg,#ff9a9e,#fad0c4,#ffdde1,#fc6076)";
-        
-        msg1.style.opacity=1;
-        msg1.innerText="Happyyyyy Birthday My bestieeee💗!May this moment stay with you forever 💕";
+    // 💔 1
+    msg1.style.opacity=1;
+    msg1.innerText="There’s something I never told you…";
 
-        confetti({particleCount:200,spread:120,origin:{y:0.6}});
+    setTimeout(()=>{
+        msg1.style.opacity=0;
+
+        // 💭 2
+        msg2.style.opacity=1;
+        msg2.innerText="Every time I see you…";
 
         setTimeout(()=>{
-            msg1.style.opacity=0;
-            btn2.style.display="block";
-        },7000);
-    },5000);
+            msg2.style.opacity=0;
+
+            // 💗 3
+            msg3.style.opacity=1;
+            msg3.innerText="You make my day better 💗";
+
+            setTimeout(()=>{
+                msg3.style.opacity=0;
+
+                // 🔥 الكود الأصلي
+                document.body.style.background="linear-gradient(-45deg,#ff9a9e,#fad0c4,#ffdde1,#fc6076)";
+                
+                msg1.style.opacity=1;
+                msg1.innerText="Happyyyyy Birthday My bestieeee💗!May this moment stay with you forever 💕";
+
+                confetti({particleCount:200,spread:120,origin:{y:0.6}});
+
+                setTimeout(()=>{
+                    msg1.style.opacity=0;
+                    btn2.style.display="block";
+                },7000);
+
+            },3000);
+        },3000);
+    },3000);
 };
 
 /* BUTTON 2 */
@@ -278,18 +302,16 @@ btn3.onclick = () => {
     setTimeout(()=>extraBtn.style.display="block",1000);
 };
 
-/* FINAL WOW */
+/* FINAL */
 extraBtn.onclick = () => {
     extraBtn.style.display="none";
 
     msg3.innerText="12 PM… you’ll understand 💗";
     signature.style.opacity=1;
 
-    /* FLASH */
     flash.style.opacity=1;
     setTimeout(()=>flash.style.opacity=0,600);
 
-    /* HEART RAIN */
     for(let i=0;i<50;i++){
         setTimeout(createHeart,i*100);
     }
