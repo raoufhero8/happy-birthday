@@ -240,41 +240,41 @@ clickHeart.onclick = () => {
 
     document.body.style.background="black";
 
-    // 💔 1
     msg1.style.opacity=1;
     msg1.innerText="There’s something I never told you…";
 
     setTimeout(()=>{
         msg1.style.opacity=0;
 
-        // 💭 2
         msg2.style.opacity=1;
         msg2.innerText="Every time I see you…";
 
         setTimeout(()=>{
             msg2.style.opacity=0;
 
-            // 💗 3
-            msg3.style.opacity=1;
-            msg3.innerText="You make my day better 💗";
-
+            // 💗 هنا زدنا التأخير
             setTimeout(()=>{
-                msg3.style.opacity=0;
-
-                // 🔥 الكود الأصلي
-                document.body.style.background="linear-gradient(-45deg,#ff9a9e,#fad0c4,#ffdde1,#fc6076)";
-                
-                msg1.style.opacity=1;
-                msg1.innerText="Happyyyyy Birthday My bestieeee💗!May this moment stay with you forever 💕";
-
-                confetti({particleCount:200,spread:120,origin:{y:0.6}});
+                msg3.style.opacity=1;
+                msg3.innerText="You make my day better 💗";
 
                 setTimeout(()=>{
-                    msg1.style.opacity=0;
-                    btn2.style.display="block";
-                },7000);
+                    msg3.style.opacity=0;
 
-            },3000);
+                    // الرسالة النهائية والكود الأصلي
+                    document.body.style.background="linear-gradient(-45deg,#ff9a9e,#fad0c4,#ffdde1,#fc6076)";
+                    msg1.style.opacity=1;
+                    msg1.innerText="Happyyyyy Birthday My bestieeee💗! May this moment stay with you forever 💕";
+
+                    confetti({particleCount:200,spread:120,origin:{y:0.6}});
+
+                    setTimeout(()=>{
+                        msg1.style.opacity=0;
+                        btn2.style.display="block";
+                    },7000);
+
+                },3000);
+            },3000); // هنا حددنا 2 ثانية إضافية قبل ظهور "You make my day better 💗"
+
         },3000);
     },3000);
 };
