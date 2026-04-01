@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy 17th Birthday, Meriem! 🎉</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
 body {
     display:flex;
@@ -146,7 +144,7 @@ button:hover{transform:scale(1.08);}
     }
 }
 
-/* FLOATING HEARTS (NEW FEATURE) */
+/* FLOATING HEARTS */
 .floating-heart{
     position:absolute;
     font-size:18px;
@@ -160,7 +158,6 @@ button:hover{transform:scale(1.08);}
 }
 </style>
 </head>
-
 <body>
 
 <input id="nameInput" placeholder="to Meriem 💕🎂">
@@ -180,13 +177,12 @@ button:hover{transform:scale(1.08);}
 <button id="extraBtn">Something is Here!💕</button>
 
 <div class="signature" id="signature">Made by Raouf💗, just for you</div>
+<div style="text-align:center; font-family:'Pacifico', cursive; font-size:2em; color:white; margin-top:10px; opacity:0; transition:2s;" id="meriemName">Meriem</div>
 
 <div class="flash" id="flash"></div>
-
 <audio id="music" src="music.mp3"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
 <script>
 const nameInput=document.getElementById('nameInput');
 const startBtn=document.getElementById('startBtn');
@@ -198,12 +194,13 @@ const btn2=document.getElementById('btn2');
 const btn3=document.getElementById('btn3');
 const extraBtn=document.getElementById('extraBtn');
 const signature=document.getElementById('signature');
+const meriemName=document.getElementById('meriemName');
 const flash=document.getElementById('flash');
 const music=document.getElementById('music');
 
 let started=false;
 
-// FLOATING HEARTS NEW
+// FLOATING HEARTS
 function createFloatingHeart(){
     const f=document.createElement("div");
     f.className="floating-heart";
@@ -233,7 +230,7 @@ startBtn.onclick = ()=>{
 
     if(!started){
         started=true;
-        setInterval(createFloatingHeart,150); // قلوب الطيران الجديدة تعمل دائماً
+        setInterval(createFloatingHeart,150);
     }
 };
 
@@ -307,6 +304,9 @@ extraBtn.onclick = ()=>{
     msg3.innerText="12 PM… you’ll understand 💗";
     signature.style.opacity=1;
 
+    // ظهور Meriem أسفل التوقيع
+    setTimeout(()=>{ meriemName.style.opacity=1; }, 500);
+
     flash.style.opacity=1;
     setTimeout(()=>flash.style.opacity=0,600);
 
@@ -317,6 +317,5 @@ extraBtn.onclick = ()=>{
     confetti({particleCount:500,spread:180,scalar:1.2});
 };
 </script>
-
 </body>
 </html>
